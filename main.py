@@ -1,15 +1,18 @@
-from firebase import firebase
-import random
-import string
+import firebase_admin
+from firebase_admin import credentials, db
 
-def randomKeyGenerator(size=9, char=string.ascii_uppercase + string.digits):
-    key = ''.join(random.choice(char) for _ in range(size))
+cred = credentials.Certificate('./CertificateFirebase.json')
 
-    bd = firebase.FirebaseApplication("https://fir-python-3e64f.firebaseio.com/", None)
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://fir-python-3e64f.firebaseio.com/'
+})
 
-    result = bd.post('/key/aula/firebase', key)
+ref = db.reference('aulaRealtime/item-2')
 
-    print("Executou com sucesso!")
-    print(key)
-
-randomKeyGenerator()
+users = ref.child('users')
+users.set({
+    'Teste': {
+        'data_de_nascimento': '01/05/1850',
+        'nome_completo': 'Teste Testando Testudo'
+    }
+})

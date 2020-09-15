@@ -1,10 +1,11 @@
-from firebase import firebase
+import firebase_admin
+from firebase_admin import db, credentials
 
-def getAllDataFirebase():
-    bd = firebase.FirebaseApplication("https://fir-python-3e64f.firebaseio.com/", None)
-    key = '-MHI85mkU0el8tlMh7qS'
+cred = credentials.Certificate("./CertificateFirebase.json")
+firebase_admin.initialize_app(cred,{
+    'databaseURL': 'https://fir-python-3e64f.firebaseio.com/'
+})
 
-    result = bd.get('/key/aula/firebase', key)
-    print(result)
+ref = db.reference('aulaRealtime/item-2/users')
 
-getAllDataFirebase()
+print(ref.get())
